@@ -1,0 +1,26 @@
+.center_table{
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+.center_div{
+	text-align: center;
+}
+.empty_row{
+	height: 20px;
+}
+
+table input{
+	padding: 5px;
+}
+
+.blue_back{
+	background-color: #333333;
+	padding: 15px;
+	font-weight: bold;
+	color: white;
+	text-decoration: none;
+	border-radius: 5px;
+	border: 1px solid black;
+}

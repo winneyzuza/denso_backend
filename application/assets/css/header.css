@@ -1,0 +1,11 @@
+#logo{
+	height: 200px;
+	background-color: #E10000;
+	margin-bottom: 5px;
+}
+
+#lang{
+	position: absolute;
+	top: 3%;
+	right: 2%;
+}

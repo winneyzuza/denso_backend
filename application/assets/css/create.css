@@ -1,0 +1,150 @@
+body{
+	min-width: 1290px;
+}
+.center_table{
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+.empty_row{
+	height: 15px;
+}
+
+input,select{
+	padding: 5px;
+}
+
+table input[type="text"]{
+	width: 60%;
+}
+
+textarea[name='remark']{
+	margin: 0px;
+	width: 413px;
+	height: 104px;
+}
+
+.blue_back{
+	background-color: #0065FF;
+	color: white;
+	padding: 5px;
+	text-align: center;
+	font-family: Verdana,Arial,sans-serif;
+	font-size: 18px;
+}
+
+.button{
+	padding: 20px 50px 20px 50px;
+	border: 1px solid black;
+	cursor: pointer;
+}
+
+.pointed{
+	width: 0; 
+	height: 0; 
+	border-top: 60px solid transparent;
+	border-bottom: 60px solid transparent;
+	
+	border-left: 60px solid green;
+}
+
+table td select{
+	width: 100%;
+}
+
+td{
+	padding: 5px;
+	/*width: 44px;*/
+}
+
+#save_draft{
+	position: absolute;
+	height: 45px;
+	z-index: 2;
+	margin-top: -2px;
+	width: 50px;
+	right: 0;
+	background-image: url('../images/sprite_save.png');
+	background-position-y: 0px;
+	cursor: pointer;
+}
+
+#save_draft:hover{
+	background-color: #002A5C;
+	background-position-y: 50px;
+}
+
+#del_draft{
+	position: absolute;
+	height: 29px;
+	z-index: 2;
+	margin-top: -2px;
+	width: 34px;
+	right: 55px;
+	max-width: 50px;
+	max-height: 50px;
+	content: url('../images/delete.png');
+	/*background-position-y: 0px;*/
+	cursor: pointer;
+	padding: 8px;
+}
+
+#del_draft:hover{
+	content: url('../images/delete_hover.png');
+	background-color: black;
+}
+
+#printform{
+    position: absolute;
+    height: 43px;
+    z-index: 2;
+    width: 43px;
+    right: 110px;
+    background-image: url('../images/print.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+}
+
+#printform:hover{
+    background-color: orange;
+}
+
+.right{
+	text-align: right;
+}
+
+.ui-widget {
+	font-family: Arial!important;
+	font-size: 1em!important;
+}
+.required{
+	color: red;
+}
+.error{
+	border: 1px solid red;
+}
+.hidden{
+	display: none;
+	visibility: hidden;
+}
+
+#mask{
+	position: fixed;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0,0,0,0.3);
+	z-index: 5;
+}
+
+#loader{
+	z-index: 6;
+	position: absolute;
+	left: 20%;
+	/*top:40%;*/
+	width: 20%;
+	height: 20%;
+}

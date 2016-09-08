@@ -1,0 +1,53 @@
+.blue_back{
+	background-color: #0065FF;
+	color: white;
+	padding: 5px;
+	text-align: center;
+	font-family: Verdana,Arial,sans-serif;
+	font-size: 18px;
+}
+
+.button{
+	padding: 10px 30px 10px 30px;
+	border: 1px solid black;
+	cursor: pointer;
+}
+
+.pointed{
+	width: 0; 
+	height: 0; 
+	border-top: 60px solid transparent;
+	border-bottom: 60px solid transparent;
+	
+	border-left: 60px solid green;
+}
+
+td input,td select, td textarea{
+	padding: 5px;
+}
+
+td textarea{
+	margin: 0px;
+	width: 250px;
+	height: 75px;
+	resize: none;
+}
+
+#recent_data{
+	border-collapse: collapse;
+}
+#recent_data tr th{
+	border: 1px solid black;
+	font-weight: bold;
+	text-align: center;
+	background-color: #0D4F9D;
+	color: white;
+}
+#recent_data tr td{
+
+}
+#recent_data tr td, #recent_data tr th{
+	border: solid black 1px;
+	padding: 5px;
+	text-align: center;
+}

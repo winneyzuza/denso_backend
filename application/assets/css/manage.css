@@ -1,0 +1,81 @@
+.table{
+	display: table;
+}
+.caption{
+	display: table-caption;
+	text-align: center;
+	font-weight: bold;
+}
+.head{
+	display: table-cell;
+	border: 1px solid black;
+	padding: 5px;
+	font-weight: bold;
+	text-align: center;
+	background-color: #0D4F9D;
+	color: white;
+}
+.row{
+	display: table-row;
+}
+.cell{
+	display: table-cell;
+	border: 1px solid black;
+	padding: 5px;
+}
+.pink{
+	background-color: #FF99CC;
+}
+.center{
+	text-align: center;
+}
+.Draft{
+	background-color: #FFFF99;
+}
+.Request{
+	background-color: #FFFF00;
+}
+.Approved{
+	background-color: #00FF00;
+}
+.Delivery{
+	background-color: #3366FF;
+}
+.Core_Return{
+	background-color: #C0C0C0;
+}
+.Cancel{
+	background-color: #FF0000;
+}
+.middle{
+	margin-right: auto;
+	margin-left: auto;
+}
+.padded{
+	padding: 10px;
+}
+.padded-half{
+	padding: 5px;
+}
+
+.blue_back{
+	background-color: #0065FF;
+	color: white;
+	padding: 5px;
+	text-align: center;
+	font-family: Verdana,Arial,sans-serif;
+	font-size: 18px;
+        padding: 5px 30px 5px 30px !important;
+        margin: 10px;
+}
+
+.button{
+	padding: 10px 40px 10px 40px;
+	border: 1px solid black;
+	cursor: pointer;
+}
+
+.hidden{
+	display: none;
+	visibility: hidden;
+}
