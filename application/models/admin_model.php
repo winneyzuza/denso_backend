@@ -16,6 +16,12 @@ class Admin_model extends CI_Model {
 		);
 		return $this->db->select('username,password,salt,sd_id')->where($conds)->get('user_auth')->row_array();
 	}
+        
+        public function getuserrole()
+	{
+		$select = "role_id,name_eng,name_th";
+		return $this->db->select($select)->order_by('name_eng', 'asc')->get('user_role')->result_array();
+	}
 
 	public function getservicedealers()
 	{

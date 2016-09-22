@@ -42,6 +42,20 @@
                 <td><input type="text" name="FullName" value="<?php echo set_value('FullName'); ?>" /></td>
             </tr>
             <tr>
+                <td>User Role</td>
+                <td>
+                    <select name="UserRole">
+                        <?PHP
+                            if(isset($role)){
+                                foreach ($role as $key => $value) {
+                                    echo "<option value='".$value['role_id']."'".set_select('UserRole', $value['role_id']).">".$value['name_eng']." (".$value['name_th'].")</option>";
+                                }
+                            }
+                        ?>
+                    </select>
+                </td>
+            </tr>
+            <tr>
                 <td><button type="submit" class="button blue_back">Add</button></td>
                 <td><button type="reset" class="button blue_back">Clear</button></td>
             </tr>

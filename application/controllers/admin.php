@@ -103,6 +103,7 @@ class Admin extends CI_Controller {
         
         public function servicedealer(){
             $data['sd'] = $this->admin_model->getservicedealers();
+            $data['role'] = $this->admin_model->getuserrole();    
             if($this->input->post()){
                 $this->load->library('form_validation');
                 $this->form_validation->set_error_delimiters('', '\n\\');
@@ -111,6 +112,8 @@ class Admin extends CI_Controller {
                 $this->form_validation->set_rules('Passconf', 'Password Confirmation', 'required|matches[Password]');
                 $this->form_validation->set_rules('ServiceDealer', 'Service Dealer', 'trim|required');
                 $this->form_validation->set_rules('FullName', 'Full Name', 'trim|required|max_length[150]');
+                $this->form_validation->set_rules('UserRole', 'User Role', 'trim|required');
+                
                 if ($this->form_validation->run() == FALSE){
                     $this->load->view('header_view');
                     $this->load->view('side_bar_view');
@@ -122,6 +125,7 @@ class Admin extends CI_Controller {
                         'username'  => $this->input->post('Username'),
                         'sd_id'     => $this->input->post('ServiceDealer'),
                         'full_name' => $this->input->post('FullName'),
+                        'user_role' => $this->input->post('UserRole'),
                         'user_group'    => 1,
                         'changed_time'  => date("Y-m-d H:i:s", time())
                     );
