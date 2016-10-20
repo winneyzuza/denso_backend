@@ -47,6 +47,7 @@ class Update extends CI_Controller {
         $this->lang->load('menu',$lang);
         $this->lang->load('manage',$lang);
         $this->lang->load('create',$lang);
+        $this->lang->load('home',$lang);
 
         $this->load->helper('language');
         if (!$this->session->userdata('logged_in')){
@@ -763,9 +764,15 @@ class Update extends CI_Controller {
         }
         
         public function mapping(){
+        	
+        	$this->load->model('search_model');
+        	$regions = $this->search_model->getregion();
+        	
             if($id = $this->uri->segment(3)){
                 $this->load->model('search_model');
                 $maker_id = $this->input->get("maker_id");
+                $data['maker_id'] = $maker_id;
+                
                 if($this->search_model->valid_maker($maker_id)){
                     $data['makers'] = "";
                     $makers = $this->search_model->getmakers();
@@ -774,6 +781,14 @@ class Update extends CI_Controller {
                     }
                 } else {
                     redirect(redirect_get(array("maker_id"=>"001")));
+                }
+                
+                $region = $this->input->get("region");
+                if($regions){
+                	$data['regions'] = "";
+                	foreach ($regions as $value) {
+                		$data['regions'].=("<option value='".redirect_get(array("region"=>$value['region_code']))."'").(($value['region_code']==$region)?(" selected"):("")).(">".$value[lang('region_name')]."</option>");                		
+                	}
                 }
                 
                 //sd info
@@ -786,7 +801,6 @@ class Update extends CI_Controller {
                 $this->db->order_by('dealer.name_eng', 'asc');
                 $taken = $this->db->get_where('dealer', array(
                     'dealer_relationship.sd_id' => $sd_info['sd_id'],
-                    'region'                    => $sd_info['region_code'],
                     'dealer.maker_id'           => $maker_id
                 ))->result_array();
 //                echo 'inside = '.count($taken).'<br />';
@@ -802,15 +816,19 @@ class Update extends CI_Controller {
                 if($temp)
                     $this->db->where_not_in('dealer_id', $temp);
                 $this->db->order_by('dealer.name_eng', 'asc');
+                
+                if(!$region){
+                	$region = $sd_info['region_code'];
+                }
                 $single = $this->db->get_where('dealer', array(
-                    'region'            => $sd_info['region_code'],
+                    'region'            => $region,
                     'dealer.maker_id'   => $maker_id
                 ))->result_array();
 //                echo 'outside = '.count($single).'<br />';
                 
                 //total
                 $complete = $this->db->get_where('dealer', array(
-                    'region'                    => $sd_info['region_code'],
+                    'region'                    => $region,
                     'dealer.maker_id'           => $maker_id
                 ))->result_array();
 //                echo 'total = '.count($complete);

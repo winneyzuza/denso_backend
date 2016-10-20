@@ -77,7 +77,7 @@ class Search_model extends CI_Model{
     }
     
     public function getregion(){
-        $this->db->select('region_code, region_name');
+        $this->db->select('region_code, region_name, region_name_th');
         $this->db->order_by('region_name', 'asc');
         return $this->db->get('region')->result_array();
     }

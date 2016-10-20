@@ -7,7 +7,7 @@ $lang['manage_sd_name'] = "name_th";
 $lang['manage_dealer_name'] = "name_th";
 $lang['manage_maker_name'] = "maker_th";
 $lang['manage_part_type_column'] = "name_th";
-
+$lang['region_name'] = "region_name_th";
 
 /*****************************PAGE VARIABLES**********************/
 

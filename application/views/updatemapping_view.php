@@ -30,7 +30,7 @@
                     else
                         location.reload();
                 })
-            })
+            })          
         })
     </script>
 </head>
@@ -62,8 +62,15 @@
     Total Dealers: <?php echo count($complete); ?>
     <br/>
     <br/>
-    <select onchange="changeMaker(this.value);">
+    <select id="makers" onchange="changeMaker(this.value);">
         <?php echo $makers; ?>
+    </select>
+    <input type="hidden" name="maker_id" id="maker_id" value="<?php if(isset($maker_id)) echo $maker_id; ?>" />
+    <br/>
+    <br/>
+    <b><?php echo lang('region'); ?></b>&nbsp;
+    <select name="RegionCode" id="RegionCode" onchange="changeRegion(this.value);">
+    	<?php echo $regions; ?>
     </select>
     <br/>
     <br/>
@@ -104,6 +111,12 @@
 </body>
 <script type="text/javascript">
     function changeMaker(value){
-        window.location.href=value;
+        var region = document.getElementById("RegionCode").value;
+        window.location.href=value+"&region="+region;
+    }
+
+    function changeRegion(value){
+        var maker_id = document.getElementById("maker_id").value;
+        window.location.href=value+"&maker_id="+maker_id;
     }
 </script>
