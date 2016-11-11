@@ -108,3 +108,7 @@ $lang['create_alternator_exchange'] = "เปลี่ยนอัลเทอ�
 
 /**********************GENERAL VARIABLES**************************/
 $lang['create_general_select'] = "Select";
+
+/********************** Notification Screen **************************/
+$lang['update_successful'] = "Add/Update Successful";
+$lang['update_error'] = "Add/Update Failed";

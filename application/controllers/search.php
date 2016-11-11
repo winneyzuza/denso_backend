@@ -69,7 +69,7 @@ class Search extends CI_Controller {
 //                print_r($this->input->post());
 //                echo "</pre>";
                 $this->form_validation->set_error_delimiters('', '\n\\');
-                $this->form_validation->set_rules('Name','Name','trim|required');
+                $this->form_validation->set_rules('Name','Name','trim');
                 $this->form_validation->set_rules('Table','Table','trim|required');
                 if($this->form_validation->run() == FALSE){
                     $this->load->view('header_view');
@@ -153,8 +153,15 @@ class Search extends CI_Controller {
                     else
                         $offset = 0;
                     $table = $this->uri->segment(3);
+                    
+                    if(empty($this->uri->segment(5))){
+                    	$keyWord = '';
+                    	$offset = $this->uri->segment(4);
+                    }else{
+                    	$keyWord = $this->uri->segment(4);
+                    }
                     $SearchData = array(
-                        'Name'      => $this->uri->segment(4),
+                        'Name'      => $keyWord,
                         'Table'     => $table,
                         'Limit'     => 10,
                         'Offset'    => $offset
@@ -172,8 +179,15 @@ class Search extends CI_Controller {
                         $config['base_url'] = base_url().'index.php/search/searchdata/'.$result['table'].'/'.$result['query'];
                         $config['total_rows'] = $result['total'];
                         $config['per_page'] = $SearchData['Limit'];
-                        $config['uri_segment'] = 5;
-                        $config['num_links'] = 4;
+                        
+                        if(empty($this->uri->segment(5))){
+	                        $config['uri_segment'] = 4;
+	                        $config['num_links'] = 4;
+                        }else{
+	                        $config['uri_segment'] = 5;
+	                        $config['num_links'] = 4;
+                        }
+                        
                         $config['first_link'] = 'First';
                         $config['last_link'] = 'Last';
                         
@@ -644,6 +658,94 @@ class Search extends CI_Controller {
             }
         }
         
+        public function fetchallcarmodel(){
+        	if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        		$maker_id = $this->input->post('CarMaker');
+        		
+        		$query = "select distinct(model.car_model) from car_makers c
+        					left join (
+		        				select * from pump_parts pp
+		        				union all
+		        				select * from compressor_parts cp
+		        				union all
+		        				select * from injector_parts
+		        				union all
+		        				select * from alternator_parts) model
+		        			on c.maker_id = model.maker_id
+		        		where c.maker_id = '".$maker_id."'"." order by model.car_model asc";
+        		
+        		$result =  $this->db->query($query)->result_array();
+        		echo json_encode($result);
+        	}
+        }
+        
+        public function carModelNotification(){
+        	if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+        		$maker_id = $this->input->post('CarMaker');
+        		$car_model = $this->input->post('CarModel');
+        		
+        		if($this->uri->segment(3))
+        			$offset = $this->uri->segment(3);
+        		else
+        			$offset = 0;
+        		$perpage = 10;
+        		
+        		$this->db->select('cn.id as id,cm.maker_en as maker_en,cn.car_model as car_model');
+        		$this->db->join('car_makers cm','cm.maker_id = cn.maker_id','left');
+        		$this->db->order_by('cm.maker_en,cn.car_model', 'asc');
+        		
+        		if(empty($maker_id) && empty($car_model)){
+        			$result['result'] = $this->db->get('car_model_notification cn', $perpage, $offset)->result_array();
+        			$query = $this->db->get('car_model_notification cn')->result_array();
+        		}elseif(empty($car_model)){
+        			$result['result'] = $this->db->get_where('car_model_notification cn', array('cn.maker_id' => $maker_id),$perpage, $offset)->result_array();
+        			$query = $this->db->get_where('car_model_notification cn', array('cn.maker_id' => $maker_id))->result_array();
+        		}else{
+        			$result['result'] = $this->db->get_where('car_model_notification cn', array('cn.maker_id' => $maker_id, 'cn.car_model' => $car_model),$perpage, $offset)->result_array();
+        			$query = $this->db->get_where('car_model_notification cn', array('cn.maker_id' => $maker_id, 'cn.car_model' => $car_model))->result_array();
+        		}
+        		
+        		//$result['total'] = $this->db->count_all_results('car_model_notification');
+        		$result['total'] = count($query);
+        		
+        		$this->load->library('pagination');
+        		$config['base_url'] = base_url().'index.php/search/carModelNotification/';
+        		$config['total_rows'] = $result['total'];
+        		$config['per_page'] = $perpage;
+        		$config['uri_segment'] = 3;
+        		$config['num_links'] = 4;
+        		
+        		$this->pagination->initialize($config);
+        		
+        		$result['links'] = $this->pagination->create_links();
+        		$result['offset'] = $offset;
+        		
+        		echo json_encode($result);
+        		
+        	}
+        }
+
+        public function deleteCarModelNotification(){
+        	
+        	if($this->uri->segment('3')){
+        		
+        		$rawurldecodes = uri_string();
+        		$rawurldecodes= urldecode($rawurldecodes);
+        		$uris = 'search/deleteCarModelNotification/'.$this->uri->segment('3').'/';
+        		$carModelDel = substr($rawurldecodes,strlen($uris),strlen($rawurldecodes)-strlen($uris));
+        		
+        		$this->db->where('id', $this->uri->segment('3'));
+        		$this->db->where('car_model', $carModelDel);
+        		$this->db->delete('car_model_notification');
+        		$this->load->view('header_view');
+        		$this->load->view('side_bar_view');
+        		echo "<script>alert('Successfully deleted ".$carModelDel.".');</script>";
+        		$this->load->view('car_model_notify_msg_view');
+        		$this->load->view('footer_view');
+        	}
+        	else
+        		redirect('search/carModelNotification');
+        }
 }
 
 /* End of file welcome.php */

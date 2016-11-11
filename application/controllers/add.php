@@ -380,6 +380,48 @@ class Add extends CI_Controller {
                 $this->load->view('footer_view');
             }
         }
+	public function carModelNotification() {
+		
+		$data['addResult'] =  '';
+		
+		if ($this->input->post ()) {
+            $this->form_validation->set_rules('CarMaker','Car Maker','trim|required');
+			$this->form_validation->set_rules('CarModel','Car Model','trim|required');
+			$this->form_validation->set_rules('EmailGroup','Email Group','trim|required');
+			if ($this->form_validation->run () == FALSE) {
+				$this->load->view ( 'header_view' );
+				$this->load->view ( 'side_bar_view' );
+				$this->load->view ( 'car_model_notify_msg_view' );
+				$this->load->view ( 'footer_view' );
+			} else {
+				$AddCarModelNotificationData = array (
+						'maker_id' => $this->input->post ( 'CarMaker' ),
+						'car_model' => $this->input->post ( 'CarModel' ),
+						'email_group' => $this->input->post ( 'EmailGroup' ) 
+				);
+				
+				if ($this->db->insert ( 'car_model_notification', $AddCarModelNotificationData )) {
+					$this->session->set_userdata(array('addResult' => 'add_successful'));
+					$this->load->view ( 'header_view' );
+					$this->load->view ( 'side_bar_view' );
+					$this->load->view ( 'car_model_notify_msg_view' );
+					$this->load->view ( 'footer_view' );
+				} else {
+					$this->session->set_userdata(array('addResult' => 'update_error'));
+					$data ['error'] = 'Update error...';
+					$this->load->view ( 'header_view' );
+					$this->load->view ( 'side_bar_view' );
+					$this->load->view ( 'error_view' );
+					$this->load->view ( 'footer_view' );
+				}
+			}
+		} else {
+			$this->load->view ( 'header_view' );
+			$this->load->view ( 'side_bar_view' );
+			$this->load->view ( 'car_model_notify_msg_view' );
+			$this->load->view ( 'footer_view' );
+		}
+	}        
         
 }
 

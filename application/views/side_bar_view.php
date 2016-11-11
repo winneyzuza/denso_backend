@@ -28,7 +28,7 @@
 					<li>
 						<a href="<?php echo base_url(); ?>"><?php echo lang('side_DFIP'); ?></a>
 					</li>
-				</ul>
+				</ul><br />
                 <li>Backend function</li>
                 <div id="sidemenu">
                     <ul>
@@ -60,9 +60,17 @@
                                 <li><?php echo anchor('search/servicedealer', 'Dealer - SD Mapping'); ?></li>
                                 <li><?php echo anchor('search/servicedealer?map=parts', 'Parts - SD Mapping'); ?></li>
                             </ul>
-                        </li>
+                        </li>                       
                     </ul>
-                </div>
+                </div><br />
+				<li>Notification Setting</li>
+                <div id="sidemenu">
+                    <ul>
+                    	<li><?php echo anchor('add/carModelNotification', 'Car Model Email'); ?></li>
+                        <li><?php echo anchor('add/emailTemplate', 'Email Templete'); ?></li>
+
+                      </ul>
+                </div>               
 			</ul>
 		</div>
 	<?php } ?>
