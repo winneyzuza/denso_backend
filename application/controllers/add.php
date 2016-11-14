@@ -46,6 +46,7 @@ class Add extends CI_Controller {
 		$this->lang->load('menu',$lang);
 		$this->lang->load('manage',$lang);
 		$this->lang->load('create',$lang);
+		$this->lang->load('add',$lang);
 
 		$this->load->helper('language');
         if (!$this->session->userdata('logged_in')){
@@ -421,8 +422,74 @@ class Add extends CI_Controller {
 			$this->load->view ( 'car_model_notify_msg_view' );
 			$this->load->view ( 'footer_view' );
 		}
+	}     
+
+	public function getEmailTemplate() {
+
+		$data['email_template_info'] = "";
+		$this->db->select('*');
+		$data['email_template_info'] = $this->db->get('email_template')->row_array();
+		
+		$this->load->view ( 'header_view' );
+		$this->load->view ( 'side_bar_view' );
+		$this->load->view ( 'email_template_view',$data);
+		$this->load->view ( 'footer_view' );
+	}
+	
+	public function doUpdateEmailError() {
+			
+		$data ['error'] = 'Update error...';
+		$this->load->view ( 'header_view' );
+		$this->load->view ( 'side_bar_view' );
+		$this->load->view ( 'error_view' );
+		$this->load->view ( 'footer_view' );
+	
+	}
+	
+	public function addEmailTemplate() {
+		
+		$data['addResult'] =  '';
+		
+		$email_id = $this->input->post('email_id');
+		
+		if ($this->input->post ()) {
+			$this->form_validation->set_rules('Subject','Subject','trim|required');
+			$this->form_validation->set_rules('Sender','Sender','trim|required');
+			$this->form_validation->set_rules('EmailContent','Email Content','trim|required');
+			if ($this->form_validation->run () == FALSE) {
+				$this->getEmailTemplate();
+			} else {
+				$AddEmailTemplateData = array (
+						'subject' => $this->input->post ( 'Subject' ),
+						'sender' => $this->input->post ( 'Sender' ),
+						'email_content' => $this->input->post ( 'EmailContent' )
+				);
+		
+				if(isset($email_id) && !empty($email_id)){
+					
+					$this->db->where ( 'email_id', $email_id );
+					
+					if ($this->db->update ( 'email_template' , $AddEmailTemplateData )) {
+						$this->session->set_userdata(array('addResult' => 'add_successful'));
+						$this->getEmailTemplate();
+					} else {
+						$this->session->set_userdata(array('addResult' => 'update_error'));
+						$this->doUpdateEmailError();
+					}
+				}else {
+					if ($this->db->insert ( 'email_template', $AddEmailTemplateData )) {
+						$this->session->set_userdata(array('addResult' => 'add_successful'));
+						$this->getEmailTemplate();
+					} else {
+						$this->session->set_userdata(array('addResult' => 'update_error'));
+						$this->doUpdateEmailError();
+					}
+				}
+			}
+		} else {
+			$this->getEmailTemplate();
+		}
 	}        
-        
 }
 
 /* End of file welcome.php */

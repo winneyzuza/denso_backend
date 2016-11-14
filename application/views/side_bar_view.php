@@ -67,7 +67,7 @@
                 <div id="sidemenu">
                     <ul>
                     	<li><?php echo anchor('add/carModelNotification', 'Car Model Email'); ?></li>
-                        <li><?php echo anchor('add/emailTemplate', 'Email Templete'); ?></li>
+                        <li><?php echo anchor('add/getEmailTemplate', 'Email Templete'); ?></li>
 
                       </ul>
                 </div>               

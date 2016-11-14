@@ -51,3 +51,11 @@ td textarea{
 	padding: 5px;
 	text-align: center;
 }
+
+#email_content{
+	width:500px;
+	height:500px;
+}
+.required{
+	color: red;
+}
