@@ -1004,5 +1004,63 @@ class Update extends CI_Controller {
 
             echo json_encode($return);
         }
+	public function carModelNotification() {
+		
+		$data ['addResult'] = '';
+		$data['car_model_notify'] = "";
+		
+		if ($id = $this->uri->segment ( 3 )) {
+			
+			$data['car_model_notify'] = $this->db->get_where('car_model_notification', array('id' => $id))->row_array();
+			
+			if ($this->input->post ()) {
+				$this->form_validation->set_rules ( 'CarMaker', 'Car Maker', 'trim|required' );
+				$this->form_validation->set_rules ( 'CarModel', 'Car Model', 'trim|required' );
+				$this->form_validation->set_rules ( 'EmailGroup', 'Email Group', 'trim|required' );
+				if ($this->form_validation->run () == FALSE) {
+					$this->load->view ( 'header_view' );
+					$this->load->view ( 'side_bar_view' );
+					$this->load->view ( 'car_model_notify_msg_view' );
+					$this->load->view ( 'footer_view' );
+				} else {
+					
+					$AddCarModelNotificationData = array (
+							'maker_id' => $this->input->post ( 'CarMaker' ),
+							'car_model' => $this->input->post ( 'CarModel' ),
+							'email_group' => $this->input->post ( 'EmailGroup' ) 
+					);
+					
+					$this->db->where ( 'id', $id );
+					if ($this->db->update ( 'car_model_notification', $AddCarModelNotificationData )) {
+						$this->session->set_userdata ( array (
+								'addResult' => 'add_successful' 
+						) );
+						redirect ( 'add/carModelNotification' );
+					} else {
+						$this->session->set_userdata ( array (
+								'addResult' => 'update_error' 
+						) );
+						$this->doUpdateEmailError ();
+					}
+				}
+			} else {
+				$this->load->view ( 'header_view' );
+				$this->load->view ( 'side_bar_view' );
+				$this->load->view ( 'car_model_notify_msg_view',$data );
+				$this->load->view ( 'footer_view' );
+			}
+		} else {
+			redirect ( 'add/carModelNotification' );
+		}
+	}
+
+        public function doUpdateEmailError() {
+        		
+        	$data ['error'] = 'Update error...';
+        	$this->load->view ( 'header_view' );
+        	$this->load->view ( 'side_bar_view' );
+        	$this->load->view ( 'error_view' );
+        	$this->load->view ( 'footer_view' );
         
+        }
 }

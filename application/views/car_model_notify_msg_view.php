@@ -4,7 +4,7 @@
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>application/assets/css/jquery-ui.min.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>application/assets/css/add.css">
         <script src="<?php echo base_url(); ?>application/assets/js/jquery-1.11.2.min.js"></script>
-        <script>
+        <script>        
             $(document).on('change', '#CarMaker', function(){
                 $("#CarModel").html("<option selected disabled>Please Select</option>");
                 $("#results").html('');
@@ -27,13 +27,26 @@
     <body>
         <h1>Car Model Notification Setting</h1>
         <?PHP
+       		$action = base_url()."index.php/update/carModelNotification";
             $this->db->select('maker_en, maker_id');
             $this->db->order_by('maker_en', 'asc');
             $raw = $this->db->get('car_makers')->result_array();
-//            print_r($raw);
-            $CarMaker = '<option selected disabled>Please Select</option>';
-            foreach ($raw as $value) {
-                    $CarMaker .= "<option value='".$value['maker_id']."'>".$value['maker_en']."</option>";
+            $CarMaker ="";
+            if(isset($car_model_notify) && !empty($car_model_notify)){
+            	
+            	foreach ($raw as $value) {
+            		if($car_model_notify['maker_id'] == $value['maker_id']){
+            			$CarMaker .= "<option selected value='".$value['maker_id']."'>".$value['maker_en']."</option>";
+            		}else{
+            			$CarMaker .= "<option disabled value='".$value['maker_id']."'>".$value['maker_en']."</option>";
+            		}
+            	}
+            	
+            }else{
+            	$CarMaker = '<option selected disabled>Please Select</option>';
+            	foreach ($raw as $value) {
+            		$CarMaker .= "<option value='".$value['maker_id']."'>".$value['maker_en']."</option>";
+            	}
             }
 
 	       if (validation_errors()) {
@@ -51,7 +64,7 @@
 	       $this->session->unset_userdata('addResult');
 
   	 	?>        
-        <form name="calModelNotifyMsgFrm" id="calModelNotifyMsgFrm" action="<?PHP echo base_url();?>index.php/add/carModelNotification" method="post">
+        <form name="calModelNotifyMsgFrm" id="calModelNotifyMsgFrm" action="<?php $action ?>" method="post">
             <table>
             <tr>
                 <td>Car Maker</td>
@@ -65,20 +78,30 @@
                 <td>Car Model</td>
                 <td>
                     <select name="CarModel" id="CarModel">
-                        <option selected disabled>Please Select</option>
+	                    <?php 
+			            	if(isset($car_model_notify) && !empty($car_model_notify)){
+			            		echo "<option selected value='".$car_model_notify['car_model']."'>".$car_model_notify['car_model']."</option>";
+			            	}else{
+						?>                  
+                        	<option selected disabled>Please Select</option>
+                        <?php }?>
                     </select>
                 </td>
             </tr>
             <tr>
                 <td>EmailGroup</td>
                 <td>
-                <input size="80" type="text" name="EmailGroup" id="EmailGroup" />
+                <input size="80" type="text" name="EmailGroup" id="EmailGroup" value="<?php if(isset($car_model_notify['email_group'])) echo $car_model_notify['email_group']; ?>"/>
                 </td>            
             </tr>
             </table>
             <br/>
-            <button type="button" id="frm_submit" class="button blue_back">Add</button>
-            <button type="button" id="search" class="button blue_back">Search</button>
+            <?php if(isset($car_model_notify) && !empty($car_model_notify)){?>
+            	<button type="button" id="frm_update" class="button blue_back">Update</button>
+           <?php }else{?>
+	            <button type="button" id="frm_submit" class="button blue_back">Add</button>
+	            <button type="button" id="search" class="button blue_back">Search</button>
+            <?php }?>
             <br/>
         </form>
         <br/>
@@ -128,6 +151,15 @@
 	    $(document).on('click', '#frm_submit', function(){
 	
 	    	if(checkEmails()){
+	        	document.getElementById("calModelNotifyMsgFrm").submit();
+	        }
+	        
+	    });
+
+	    $(document).on('click', '#frm_update', function(){
+	    	
+	    	if(checkEmails()){
+	        	<?php $action = base_url()."index.php/update/carModelNotification"; ?>
 	        	document.getElementById("calModelNotifyMsgFrm").submit();
 	        }
 	        

@@ -381,6 +381,7 @@ class Add extends CI_Controller {
                 $this->load->view('footer_view');
             }
         }
+        
 	public function carModelNotification() {
 		
 		$data['addResult'] =  '';
